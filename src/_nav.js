@@ -50,7 +50,7 @@ const _nav = [
   {
     component: CNavItem,
     name: 'Report an Issue',
-    to: '/base',
+    to: '/reportcheck',
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
     
   },
