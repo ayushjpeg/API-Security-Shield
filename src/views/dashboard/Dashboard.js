@@ -233,11 +233,11 @@ const Dashboard = () => {
           </CRow>
         </CCardFooter>
       </CCard>
-      <WidgetsBrand className="mb-4" withCharts />
+      
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader>Traffic {' & '} Sales</CCardHeader>
+            <CCardHeader>Traffic </CCardHeader>
             <CCardBody>
               <CRow>
                 <CCol xs={12} md={6} xl={6}>
@@ -278,12 +278,7 @@ const Dashboard = () => {
                         <div className="fs-5 fw-semibold">78,623</div>
                       </div>
                     </CCol>
-                    <CCol xs={6}>
-                      <div className="border-start border-start-4 border-start-success py-1 px-3 mb-3">
-                        <div className="text-body-secondary text-truncate small">Organic</div>
-                        <div className="fs-5 fw-semibold">49,123</div>
-                      </div>
-                    </CCol>
+            
                   </CRow>
 
                   <hr className="mt-0" />
