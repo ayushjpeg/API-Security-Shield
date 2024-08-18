@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { CCard, CCardBody, CCol, CCardHeader, CRow, CFormSelect } from '@coreui/react'
-import { CChartBar, CChartDoughnut } from '@coreui/react-chartjs'
+import { Line, Bar } from 'react-chartjs-2'
+import Chart from 'chart.js/auto'
 
-// Mock Data for APIs
 const apiData = [
   {
     id: 1,
@@ -15,10 +15,24 @@ const apiData = [
     responseTime: '120ms',
     errorRate: '0.2%',
     lastChecked: '2024-08-18T12:34:56Z',
-    performanceData: {
-      throughput: [5000, 5200, 5300, 5100, 5000],
-      latency: [120, 130, 125, 115, 120],
-      errorRate: [0.2, 0.3, 0.25, 0.2, 0.15],
+    security: {
+      authMechanism: 'OAuth 2.0',
+      encryption: 'TLS 1.2',
+      vulnerability: 'None detected',
+      firewallProtection: 'Enabled',
+      DDOSProtection: 'Enabled',
+      penetrationTesting: 'Passed',
+    },
+    performance: {
+      requestCount: 1200,
+      avgResponseTime: '110ms',
+      successRate: '99.0%',
+      throughput: '1500 req/s',
+      maxConcurrentUsers: 1000,
+      latencyPercentiles: {
+        p95: '150ms',
+        p99: '200ms',
+      },
     },
   },
   {
@@ -31,10 +45,114 @@ const apiData = [
     responseTime: '300ms',
     errorRate: '1.5%',
     lastChecked: '2024-08-18T12:34:56Z',
-    performanceData: {
-      throughput: [2000, 2100, 2200, 2000, 1900],
-      latency: [300, 320, 310, 305, 295],
-      errorRate: [1.5, 1.4, 1.6, 1.5, 1.3],
+    security: {
+      authMechanism: 'API Key',
+      encryption: 'TLS 1.2',
+      vulnerability: 'Minor issue detected',
+      firewallProtection: 'Enabled',
+      DDOSProtection: 'Enabled',
+      penetrationTesting: 'Pending',
+    },
+    performance: {
+      requestCount: 800,
+      avgResponseTime: '320ms',
+      successRate: '95.0%',
+      throughput: '1000 req/s',
+      maxConcurrentUsers: 800,
+      latencyPercentiles: {
+        p95: '350ms',
+        p99: '400ms',
+      },
+    },
+  },
+  {
+    id: 3,
+    name: 'Order Management API',
+    description: 'Handles order processing and tracking',
+    status: 'Healthy',
+    version: 'v3.1.0',
+    uptime: '99.7%',
+    responseTime: '200ms',
+    errorRate: '0.5%',
+    lastChecked: '2024-08-18T12:34:56Z',
+    security: {
+      authMechanism: 'JWT',
+      encryption: 'TLS 1.3',
+      vulnerability: 'None detected',
+      firewallProtection: 'Enabled',
+      DDOSProtection: 'Enabled',
+      penetrationTesting: 'Passed',
+    },
+    performance: {
+      requestCount: 1500,
+      avgResponseTime: '190ms',
+      successRate: '98.8%',
+      throughput: '1800 req/s',
+      maxConcurrentUsers: 1200,
+      latencyPercentiles: {
+        p95: '220ms',
+        p99: '270ms',
+      },
+    },
+  },
+  {
+    id: 4,
+    name: 'Inventory Service API',
+    description: 'Manages product inventory and stock levels',
+    status: 'Degraded',
+    version: 'v1.0.0',
+    uptime: '96.0%',
+    responseTime: '500ms',
+    errorRate: '3.0%',
+    lastChecked: '2024-08-18T12:34:56Z',
+    security: {
+      authMechanism: 'API Key',
+      encryption: 'TLS 1.2',
+      vulnerability: 'Major issue detected',
+      firewallProtection: 'Disabled',
+      DDOSProtection: 'Disabled',
+      penetrationTesting: 'Failed',
+    },
+    performance: {
+      requestCount: 1000,
+      avgResponseTime: '480ms',
+      successRate: '92.0%',
+      throughput: '800 req/s',
+      maxConcurrentUsers: 500,
+      latencyPercentiles: {
+        p95: '600ms',
+        p99: '700ms',
+      },
+    },
+  },
+  {
+    id: 5,
+    name: 'Notification Service API',
+    description: 'Handles user notifications and alerts',
+    status: 'Healthy',
+    version: 'v2.3.4',
+    uptime: '99.8%',
+    responseTime: '180ms',
+    errorRate: '0.1%',
+    lastChecked: '2024-08-18T12:34:56Z',
+    security: {
+      authMechanism: 'OAuth 2.0',
+      encryption: 'TLS 1.2',
+      vulnerability: 'None detected',
+      firewallProtection: 'Enabled',
+      DDOSProtection: 'Enabled',
+      penetrationTesting: 'Passed',
+    },
+    performance: {
+      requestCount: 900,
+      avgResponseTime: '170ms',
+      successRate: '99.5%',
+      throughput: '1200 req/s',
+      maxConcurrentUsers: 900,
+      latencyPercentiles: {
+        p95: '200ms',
+        p99: '250ms',
+      },
     },
   },
   // Add more APIs here as needed
@@ -49,6 +167,37 @@ const Colors = () => {
   }
 
   const selectedApi = apiData.find((api) => api.id === selectedApiId)
+
+  // Enhanced data for latency chart with more variation
+  const latencyData = {
+    labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
+    datasets: [
+      {
+        label: 'Latency (ms)',
+        data: [100, 300, 150, 200, 500, 120, 320], // Example latency data with more variation
+        borderColor: 'blue',
+        fill: false,
+        pointBackgroundColor: 'red', // Color for points
+        pointBorderColor: 'blue',
+        pointHoverBackgroundColor: 'yellow', // Change color on hover
+        pointHoverBorderColor: 'black',
+        pointRadius: 5, // Increase point size for better visibility
+      },
+    ],
+  }
+
+  const requestsData = {
+    labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
+    datasets: [
+      {
+        label: 'Requests',
+        data: [500, 600, 700, 650, 800, 720, 750], // Example request data
+        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1,
+      },
+    ],
+  }
 
   return (
     <CRow>
@@ -69,101 +218,175 @@ const Colors = () => {
           </CCardBody>
         </CCard>
       </CCol>
-      <CCol xs={12} md={4}>
-        {selectedApi ? (
-          <CCard className="mb-4">
-            <CCardHeader>General Information</CCardHeader>
-            <CCardBody>
-              <p>
-                <strong>Description:</strong> {selectedApi.description}
-              </p>
-              <p>
-                <strong>Status:</strong> {selectedApi.status}
-              </p>
-              <p>
-                <strong>Version:</strong> {selectedApi.version}
-              </p>
-              <p>
-                <strong>Uptime:</strong> {selectedApi.uptime}
-              </p>
-              <p>
-                <strong>Response Time:</strong> {selectedApi.responseTime}
-              </p>
-              <p>
-                <strong>Error Rate:</strong> {selectedApi.errorRate}
-              </p>
-              <p>
-                <strong>Last Checked:</strong> {new Date(selectedApi.lastChecked).toLocaleString()}
-              </p>
-            </CCardBody>
-          </CCard>
-        ) : (
+
+      {selectedApi ? (
+        <>
+          {/* General, Security, and Performance Information */}
+          <CRow>
+            <CCol xs={12} md={4}>
+              <CCard className="mb-4">
+                <CCardHeader>General Information</CCardHeader>
+                <CCardBody>
+                  <p>
+                    <strong>Description:</strong> {selectedApi.description}
+                  </p>
+                  <p>
+                    <strong>Status:</strong> {selectedApi.status}
+                  </p>
+                  <p>
+                    <strong>Version:</strong> {selectedApi.version}
+                  </p>
+                  <p>
+                    <strong>Uptime:</strong> {selectedApi.uptime}
+                  </p>
+                  <p>
+                    <strong>Response Time:</strong> {selectedApi.responseTime}
+                  </p>
+                  <p>
+                    <strong>Error Rate:</strong> {selectedApi.errorRate}
+                  </p>
+                  <p>
+                    <strong>Last Checked:</strong>{' '}
+                    {new Date(selectedApi.lastChecked).toLocaleString()}
+                  </p>
+                </CCardBody>
+              </CCard>
+            </CCol>
+
+            <CCol xs={12} md={4}>
+              <CCard className="mb-4">
+                <CCardHeader>Security Information</CCardHeader>
+                <CCardBody>
+                  <p>
+                    <strong>Authentication Mechanism:</strong> {selectedApi.security.authMechanism}
+                  </p>
+                  <p>
+                    <strong>Encryption:</strong> {selectedApi.security.encryption}
+                  </p>
+                  <p>
+                    <strong>Vulnerability:</strong> {selectedApi.security.vulnerability}
+                  </p>
+                  <p>
+                    <strong>Firewall Protection:</strong> {selectedApi.security.firewallProtection}
+                  </p>
+                  <p>
+                    <strong>DDOS Protection:</strong> {selectedApi.security.DDOSProtection}
+                  </p>
+                  <p>
+                    <strong>Penetration Testing:</strong> {selectedApi.security.penetrationTesting}
+                  </p>
+                </CCardBody>
+              </CCard>
+            </CCol>
+
+            <CCol xs={12} md={4}>
+              <CCard className="mb-4">
+                <CCardHeader>Performance Metrics</CCardHeader>
+                <CCardBody>
+                  <p>
+                    <strong>Request Count:</strong> {selectedApi.performance.requestCount}
+                  </p>
+                  <p>
+                    <strong>Average Response Time:</strong>{' '}
+                    {selectedApi.performance.avgResponseTime}
+                  </p>
+                  <p>
+                    <strong>Success Rate:</strong> {selectedApi.performance.successRate}
+                  </p>
+                  <p>
+                    <strong>Throuhput:</strong> {selectedApi.performance.throughput}
+                  </p>
+                  <p>
+                    <strong>Max Concurrent Users:</strong>{' '}
+                    {selectedApi.performance.maxConcurrentUsers}
+                  </p>
+                </CCardBody>
+              </CCard>
+            </CCol>
+          </CRow>
+
+          {/* Charts and Cards */}
+          <CRow>
+            {/* Latency Line Chart */}
+            <CCol xs={12} md={4}>
+              <CCard className="mb-4">
+                <CCardHeader>API Latency (Last 7 Days)</CCardHeader>
+                <CCardBody>
+                  <Line
+                    data={latencyData}
+                    options={{
+                      maintainAspectRatio: false,
+                      tooltips: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                          label: function (tooltipItem) {
+                            return `Latency: ${tooltipItem.yLabel} ms`
+                          },
+                        },
+                      },
+                      hover: {
+                        mode: 'nearest',
+                        intersect: true,
+                      },
+                    }}
+                  />
+                </CCardBody>
+              </CCard>
+            </CCol>
+
+            {/* Requests Histogram */}
+            <CCol xs={12} md={4}>
+              <CCard className="mb-4">
+                <CCardHeader>API Requests (Last 7 Days)</CCardHeader>
+                <CCardBody>
+                  <Bar data={requestsData} options={{ maintainAspectRatio: false }} />
+                </CCardBody>
+              </CCard>
+            </CCol>
+
+            {/* Latency and Unique Users Cards */}
+            <CCol xs={12} md={2}>
+              <CCard className="mb-4">
+                <CCardHeader>Latency</CCardHeader>
+                <CCardBody>
+                  <h5>{selectedApi.responseTime}</h5>
+                </CCardBody>
+              </CCard>
+
+              <CCard className="mb-4">
+                <CCardHeader>Unique Users</CCardHeader>
+                <CCardBody>
+                  <h5>3,328</h5> {/* Example data */}
+                </CCardBody>
+              </CCard>
+            </CCol>
+
+            {/* Requests and Failures Cards */}
+            <CCol xs={12} md={2}>
+              <CCard className="mb-4">
+                <CCardHeader>Requests</CCardHeader>
+                <CCardBody>
+                  <h5>{selectedApi.performance.requestCount}</h5>
+                </CCardBody>
+              </CCard>
+
+              <CCard className="mb-4">
+                <CCardHeader>Failures</CCardHeader>
+                <CCardBody>
+                  <h5>765</h5> {/* Example data */}
+                </CCardBody>
+              </CCard>
+            </CCol>
+          </CRow>
+        </>
+      ) : (
+        <CCol xs={12}>
           <CCard>
             <CCardBody>
               <p>Please select an API to view its details.</p>
             </CCardBody>
           </CCard>
-        )}
-      </CCol>
-      {selectedApi && (
-        <CCol xs={12} md={8}>
-          <CRow>
-            <CCol xs={12} md={6}>
-              <CCard className="mb-4">
-                <CCardHeader>Performance Charts</CCardHeader>
-                <CCardBody>
-                  <CChartBar
-                    data={{
-                      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-                      datasets: [
-                        {
-                          label: 'Throughput',
-                          backgroundColor: '#f87979',
-                          data: selectedApi.performanceData.throughput,
-                        },
-                        {
-                          label: 'Latency',
-                          backgroundColor: '#36A2EB',
-                          data: selectedApi.performanceData.latency,
-                        },
-                      ],
-                    }}
-                    labels="months"
-                    options={{
-                      responsive: true,
-                      maintainAspectRatio: false,
-                    }}
-                  />
-                </CCardBody>
-              </CCard>
-            </CCol>
-            <CCol xs={12} md={6}>
-              <CCard className="mb-4">
-                <CCardHeader>Performance Metrics</CCardHeader>
-                <CCardBody>
-                  <CChartDoughnut
-                    data={{
-                      labels: ['Max Throughput', 'Min Latency', 'Max Error Rate'],
-                      datasets: [
-                        {
-                          data: [
-                            Math.max(...selectedApi.performanceData.throughput),
-                            Math.min(...selectedApi.performanceData.latency),
-                            Math.max(...selectedApi.performanceData.errorRate),
-                          ],
-                          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-                        },
-                      ],
-                    }}
-                    options={{
-                      responsive: true,
-                      maintainAspectRatio: false,
-                    }}
-                  />
-                </CCardBody>
-              </CCard>
-            </CCol>
-          </CRow>
         </CCol>
       )}
     </CRow>
