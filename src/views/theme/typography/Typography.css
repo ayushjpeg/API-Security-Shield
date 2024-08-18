@@ -1,0 +1,31 @@
+/* Ensure this CSS file is applied in dark mode context */
+
+.risk-item {
+    background-color: #1e1e1e; /* Dark background for dark mode */
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.2); /* Light shadow for better visibility */
+  }
+  
+  .risk-title {
+    color: #e0e0e0; /* Light text color */
+    margin-bottom: 8px;
+  }
+  
+  .risk-result {
+    padding: 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .result-pass {
+    background-color: #4caf50; /* Green background for pass */
+    color: #ffffff; /* White text color */
+  }
+  
+  .result-fail {
+    background-color: #f44336; /* Red background for fail */
+    color: #ffffff; /* White text color */
+  }
+  
