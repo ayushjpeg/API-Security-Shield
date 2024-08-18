@@ -34,7 +34,7 @@ const _nav = [
   {
     component: CNavItem,
     name: 'Status & History',
-    to: '/theme/colors',
+    to: '/api',
     icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
   },
   {
