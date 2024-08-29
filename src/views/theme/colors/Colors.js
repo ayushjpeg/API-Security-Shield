@@ -301,7 +301,7 @@ const Colors = () => {
 
           <CRow>
             <CCol xs={12} md={4} >
-              <CCard className="mb-4" style={{ marginTop: '1rem' }}>
+              <CCard className="mb-4" >
                 <CCardHeader>General Information</CCardHeader>
                 <CCardBody>
                   <p>
@@ -328,7 +328,7 @@ const Colors = () => {
             </CCol>
 
             <CCol xs={12} md={4}>
-              <CCard className="mb-4" style={{ marginTop: '1rem' }}>
+              <CCard className="mb-4" >
                 <CCardHeader>Security Information</CCardHeader>
                 <CCardBody>
                   <p>
@@ -354,7 +354,7 @@ const Colors = () => {
             </CCol>
 
             <CCol xs={12} md={4}>
-              <CCard className="mb-4" style={{ marginTop: '1rem' }}>
+              <CCard className="mb-4" >
                 <CCardHeader>Performance Metrics</CCardHeader>
                 <CCardBody>
                   <p>

@@ -40,7 +40,7 @@ const _nav = [
   {
     component: CNavItem,
     name: 'Security Checks',
-    to: '/theme/typography',
+    to: '/checks',
     icon: <CIcon icon={cilSearch} customClassName="nav-icon" />,
   },
   {

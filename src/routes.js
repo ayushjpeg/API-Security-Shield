@@ -81,6 +81,7 @@ const routes = [
   { path: '/buttons/button-groups', name: 'Button Groups', element: ButtonGroups },
   { path: '/charts', name: 'Charts', element: Charts },
   { path: '/reportcheck', name: 'ReportCheck', element: ReportCheck },
+  { path: '/checks', name: 'ReportCheck', element: Typography },
   { path: '/api', name: 'API', element: Colors },
   { path: '/forms', name: 'Forms', element: FormControl, exact: true },
   { path: '/forms/form-control', name: 'Form Control', element: FormControl },
