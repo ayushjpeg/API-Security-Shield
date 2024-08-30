@@ -52,23 +52,19 @@ const _nav = [
     name: 'Report an Issue',
     to: '/reportcheck',
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
-    
   },
   {
     component: CNavItem,
     name: 'Active Issues',
-    to: '/base',
+    to: '/issues/active',
     icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
-    
   },
   {
     component: CNavItem,
     name: 'Resolved Issues',
-    to: '/base',
+    to: '/issues/resolved',
     icon: <CIcon icon={cilDescription} customClassName="nav-icon" />,
-    
   },
-  
 ]
 
 export default _nav

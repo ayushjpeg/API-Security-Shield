@@ -1,6 +1,27 @@
 import React, { useState } from 'react'
-import { CCard, CCardBody, CCol, CCardHeader, CRow, CForm, CFormLabel, CFormSelect, CFormTextarea, CButton } from '@coreui/react'
+import {
+  CCard,
+  CCardBody,
+  CCol,
+  CCardHeader,
+  CRow,
+  CForm,
+  CFormLabel,
+  CFormSelect,
+  CFormTextarea,
+  CButton,
+} from '@coreui/react'
 import { CChartDoughnut, CChartLine } from '@coreui/react-chartjs'
+import axios from 'axios'
+
+// Define the API names as a constant
+const apiList = [
+  { id: 1, name: 'User Service API' },
+  { id: 2, name: 'Payment Service API' },
+  { id: 3, name: 'Order Management API' },
+  { id: 4, name: 'Inventory Service API' },
+  { id: 5, name: 'Notification Service API' },
+]
 
 const ReportCheck = () => {
   const [api, setApi] = useState('')
@@ -14,8 +35,17 @@ const ReportCheck = () => {
     setDescription(event.target.value)
   }
 
-  const handleSubmit = () => {
-    alert(`API: ${api}\nDescription: ${description}`)
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/issues', {
+        api: api,
+        description: description,
+      })
+      alert(`Issue reported: ${response.data.id}`)
+    } catch (error) {
+      console.error('Error reporting issue:', error)
+      alert('Failed to report the issue.')
+    }
   }
 
   const doughnutData = {
@@ -60,9 +90,12 @@ const ReportCheck = () => {
             <CForm>
               <CFormLabel>Select an API</CFormLabel>
               <CFormSelect value={api} onChange={handleApiChange} className="mb-3">
-                <option value="API 1">API 1</option>
-                <option value="API 2">API 2</option>
-                <option value="API 3">API 3</option>
+                <option value="">Select API</option>
+                {apiList.map((apiItem) => (
+                  <option key={apiItem.id} value={apiItem.name}>
+                    {apiItem.name}
+                  </option>
+                ))}
               </CFormSelect>
 
               <CFormLabel>Description</CFormLabel>

@@ -1,5 +1,7 @@
 import React from 'react'
 import ReportCheck from './views/reportcheck/ReportCheck'
+import ActiveIssues from './views/Issues/Active'
+import ResolvedIssues from './views/Issues/Resolved'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
@@ -59,7 +61,7 @@ const routes = [
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
-  { path: '/base', name: 'Base', element: Cards, exact: true },
+  { path: '/base', name: 'Base', element: ActiveIssues, exact: true },
   { path: '/base/accordion', name: 'Accordion', element: Accordion },
   { path: '/base/breadcrumbs', name: 'Breadcrumbs', element: Breadcrumbs },
   { path: '/base/cards', name: 'Cards', element: Cards },
@@ -73,6 +75,8 @@ const routes = [
   { path: '/base/progress', name: 'Progress', element: Progress },
   { path: '/base/spinners', name: 'Spinners', element: Spinners },
   { path: '/base/tabs', name: 'Tabs', element: Tabs },
+  { path: 'issues/active', name: 'Active Issues', element: ActiveIssues },
+  { path: 'issues/resolved', name: 'Resolved Issues', element: ResolvedIssues },
   { path: '/base/tables', name: 'Tables', element: Tables },
   { path: '/base/tooltips', name: 'Tooltips', element: Tooltips },
   { path: '/buttons', name: 'Buttons', element: Buttons, exact: true },
