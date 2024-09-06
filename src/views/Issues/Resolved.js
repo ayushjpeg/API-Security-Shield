@@ -52,7 +52,7 @@ function ResolvedIssues() {
                       {new Date(issue.date_reported).toLocaleDateString()}
                     </CTableDataCell>
                     <CTableDataCell>
-                      {new Date(issue.date_resolved).toLocaleDateString()}
+                      {new Date(issue.date_reported).toLocaleDateString()}
                     </CTableDataCell>
                   </CTableRow>
                   <CTableRow>

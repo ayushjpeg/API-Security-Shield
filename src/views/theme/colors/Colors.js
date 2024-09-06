@@ -155,6 +155,36 @@ const apiData = [
       },
     },
   },
+  {
+    id: 6,
+    name: 'Demonstration',
+    description: 'Manages all payment-related operations',
+    status: 'Warning',
+    version: 'v2.0.1',
+    uptime: '98.5%',
+    responseTime: '300ms',
+    errorRate: '1.5%',
+    lastChecked: '2024-08-18T12:34:56Z',
+    security: {
+      authMechanism: 'API Key',
+      encryption: 'TLS 1.2',
+      vulnerability: 'Minor issue detected',
+      firewallProtection: 'Enabled',
+      DDOSProtection: 'Enabled',
+      penetrationTesting: 'Pending',
+    },
+    performance: {
+      requestCount: 800,
+      avgResponseTime: '320ms',
+      successRate: '95.0%',
+      throughput: '1000 req/s',
+      maxConcurrentUsers: 800,
+      latencyPercentiles: {
+        p95: '350ms',
+        p99: '400ms',
+      },
+    },
+  },
   // Add more APIs here as needed
 ]
 

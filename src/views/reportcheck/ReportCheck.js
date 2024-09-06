@@ -21,6 +21,7 @@ const apiList = [
   { id: 3, name: 'Order Management API' },
   { id: 4, name: 'Inventory Service API' },
   { id: 5, name: 'Notification Service API' },
+  { id: 6, name: 'Demonstration' },
 ]
 
 const ReportCheck = () => {
