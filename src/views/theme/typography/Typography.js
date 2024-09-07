@@ -43,13 +43,13 @@ const Typography = () => {
     setResults(Array(owaspTop10.length).fill(null))
 
     // Perform actual API request
-    fetch('http://localhost:8000/api/test_api', {
+    fetch('https://api-security-shield-backend.onrender.com/api/test_api', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        api_url: `http://localhost:8000/${selectedApi.url}`, // Use selectedApi.url
+        api_url: `https://api-security-shield-backend.onrender.com/${selectedApi.url}`, // Use selectedApi.url
       }),
     })
       .then((response) => response.json())
