@@ -21,14 +21,14 @@ function ActiveIssues() {
 
   useEffect(() => {
     axios
-      .get('http://127.0.0.1:8000/issues/active')
+      .get('https://api-security-shield-backend.onrender.com/issues/active')
       .then((response) => setIssues(response.data))
       .catch((error) => console.error('Error fetching active issues:', error))
   }, [])
 
   const handleResolve = (issueId) => {
     axios
-      .put(`http://127.0.0.1:8000/issues/${issueId}/resolve`)
+      .put(`https://api-security-shield-backend.onrender.com/issues/${issueId}/resolve`)
       .then(() => {
         setIssues(issues.filter((issue) => issue.id !== issueId))
         setSelectedIssue(null)

@@ -25,7 +25,7 @@ const Login = () => {
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/token', {
+      const response = await axios.post('https://api-security-shield-backend.onrender.com/token', {
         username,
         password
       }, {
@@ -102,11 +102,11 @@ const Login = () => {
                       API Security Shield - GRiD 6.0 <br></br>
                       Developed by Ayush, Nikhil Sahu &amp; Ayush Chandram
                     </p>
-                    <Link to="/register">
+                 
                       <CButton color="primary" className="mt-3" active tabIndex={-1}>
-                        Register Now!
+                        Test Username : admin <br></br> Test Password : admin123
                       </CButton>
-                    </Link>
+                  
                   </div>
                 </CCardBody>
               </CCard>
