@@ -4,34 +4,36 @@ import { DocsLink } from 'src/components'
 import './Typography.css' // Import custom CSS for additional styling
 
 const apiList = [
-  { id: 1, name: 'User Service API' },
-  { id: 2, name: 'Payment Service API' },
-  { id: 3, name: 'Order Management API' },
-  { id: 4, name: 'Inventory Service API' },
-  { id: 5, name: 'Notification Service API' },
-  { id: 6, name: 'Demonstration' },
+  { id: 1, name: 'User Service API', url: 'api/user-service' },
+  { id: 2, name: 'Payment Service API', url: 'api/payment' },
+  { id: 3, name: 'Order Management API', url: 'api/order' },
+  { id: 4, name: 'Inventory Service API', url: 'api/inventory' },
+  { id: 5, name: 'Notification Service API', url: 'api/notification' },
+  { id: 6, name: 'Demonstration', url: 'api/demo' },
 ]
 
 const owaspTop10 = [
-  'Broken Access Control',
-  'Cryptographic Failures',
-  'Injection',
-  'Insecure Design',
-  'Security Misconfiguration',
-  'Vulnerable and Outdated Components',
-  'Identification and Authentication Failures',
-  'Software and Data Integrity Failures',
-  'Security Logging and Monitoring Failures',
+  'Broken Object Level Authorization',
+  'Broken Authentication',
+  'Broken Object Property Level Authorization',
+  'Unrestricted Resource Consumption',
+  'Broken Function Level Authorization',
+  'Unrestricted Access to Sensitive Business Flows',
   'Server-Side Request Forgery (SSRF)',
+  'Security Misconfiguration',
+  'Improper Inventory Management',
+  'Unsafe Consumption of APIs',
 ]
 
 const Typography = () => {
-  const [selectedApi, setSelectedApi] = useState(apiList[0].id)
+  const [selectedApi, setSelectedApi] = useState(apiList[0])
   const [results, setResults] = useState(Array(owaspTop10.length).fill(null))
   const [testing, setTesting] = useState(false)
 
   const handleApiChange = (e) => {
-    setSelectedApi(parseInt(e.target.value))
+    const selectedApiId = parseInt(e.target.value)
+    const selectedApiData = apiList.find((api) => api.id === selectedApiId)
+    setSelectedApi(selectedApiData)
   }
 
   const startTest = () => {
@@ -40,20 +42,25 @@ const Typography = () => {
     // Clear previous results
     setResults(Array(owaspTop10.length).fill(null))
 
-    owaspTop10.forEach((risk, index) => {
-      setTimeout(() => {
-        // Set 80% probability for Pass and 20% for Fail
-        const newResult = Math.random() < 0.8 ? 'Pass' : 'Fail'
-        setResults((prevResults) => {
-          const updatedResults = [...prevResults]
-          updatedResults[index] = newResult
-          return updatedResults
-        })
-        if (index === owaspTop10.length - 1) {
-          setTesting(false)
-        }
-      }, index * 1000)
+    // Perform actual API request
+    fetch('http://localhost:8000/api/test_api', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        api_url: `http://localhost:8000/${selectedApi.url}`, // Use selectedApi.url
+      }),
     })
+      .then((response) => response.json())
+      .then((data) => {
+        setResults(owaspTop10.map((risk) => data[risk] || 'Not Tested'))
+        setTesting(false)
+      })
+      .catch((error) => {
+        console.error('Error during API testing:', error)
+        setTesting(false)
+      })
   }
 
   return (
@@ -64,7 +71,7 @@ const Typography = () => {
       </CCardHeader>
       <CCardBody>
         <div className="mb-4">
-          <CFormSelect value={selectedApi} onChange={handleApiChange}>
+          <CFormSelect value={selectedApi.id} onChange={handleApiChange}>
             {apiList.map((api) => (
               <option key={api.id} value={api.id}>
                 {api.name}
