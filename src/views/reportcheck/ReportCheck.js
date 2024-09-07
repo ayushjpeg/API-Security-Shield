@@ -38,7 +38,7 @@ const ReportCheck = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/issues', {
+      const response = await axios.post('https://api-security-shield-backend.onrender.com/issues', {
         api: api,
         description: description,
       })
