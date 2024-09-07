@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   CCard,
   CCardBody,
@@ -14,41 +14,51 @@ import {
 import { CChartDoughnut, CChartLine } from '@coreui/react-chartjs'
 import axios from 'axios'
 
-// Define the API names as a constant
-const apiList = [
-  { id: 1, name: 'User Service API' },
-  { id: 2, name: 'Payment Service API' },
-  { id: 3, name: 'Order Management API' },
-  { id: 4, name: 'Inventory Service API' },
-  { id: 5, name: 'Notification Service API' },
-  { id: 6, name: 'Demonstration' },
-]
-
 const ReportCheck = () => {
-  const [api, setApi] = useState('')
-  const [description, setDescription] = useState('')
+  const [apiList, setApiList] = useState([]); // Store fetched API list
+  const [api, setApi] = useState(''); // Store selected API key
+  const [description, setDescription] = useState(''); // Store description
 
+  // Fetch the list of APIs from the backend
+  useEffect(() => {
+    fetch('https://api-security-shield-backend.onrender.com/api/apis')
+      .then((response) => response.json())
+      .then((data) => {
+        setApiList(data); // Set the fetched data to apiList
+        if (data.length > 0) {
+          setApi(data[0].key); // Select the first API by default using its key
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching API list:', error);
+      });
+  }, []);
+
+  // Handle API change
   const handleApiChange = (event) => {
-    setApi(event.target.value)
+    setApi(event.target.value); // Update the selected API key
   }
 
+  // Handle description change
   const handleDescriptionChange = (event) => {
-    setDescription(event.target.value)
+    setDescription(event.target.value);
   }
 
+  // Handle form submission
   const handleSubmit = async () => {
     try {
       const response = await axios.post('https://api-security-shield-backend.onrender.com/issues', {
-        api: api,
+        api: api, // Use the selected API key
         description: description,
-      })
-      alert(`Issue reported: ${response.data.id}`)
+      });
+      alert(`Issue reported: ${response.data.id}`);
     } catch (error) {
-      console.error('Error reporting issue:', error)
-      alert('Failed to report the issue.')
+      console.error('Error reporting issue:', error);
+      alert('Failed to report the issue.');
     }
   }
 
+  // Doughnut chart data
   const doughnutData = {
     labels: ['Resolved', 'Open', 'Unresolved'],
     datasets: [
@@ -60,6 +70,7 @@ const ReportCheck = () => {
     ],
   }
 
+  // Line chart data
   const lineData = {
     labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
     datasets: [
@@ -91,9 +102,9 @@ const ReportCheck = () => {
             <CForm>
               <CFormLabel>Select an API</CFormLabel>
               <CFormSelect value={api} onChange={handleApiChange} className="mb-3">
-                <option value="">Select API</option>
+                <option value="" disabled>Select API</option>
                 {apiList.map((apiItem) => (
-                  <option key={apiItem.id} value={apiItem.name}>
+                  <option key={apiItem.key} value={apiItem.key}>
                     {apiItem.name}
                   </option>
                 ))}

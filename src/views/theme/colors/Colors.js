@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { CCard, CCardBody, CCol, CCardHeader, CRow, CFormSelect } from '@coreui/react'
 import { Line, Bar } from 'react-chartjs-2'
@@ -7,7 +7,7 @@ import Chart from 'chart.js/auto'
 const apiData = [
   {
     id: 1,
-    name: 'User Service API',
+    name: '/user-service',
     description: 'Handles user management and authentication',
     status: 'Healthy',
     version: 'v1.2.3',
@@ -37,7 +37,7 @@ const apiData = [
   },
   {
     id: 2,
-    name: 'Payment Service API',
+    name: '/payment',
     description: 'Manages all payment-related operations',
     status: 'Warning',
     version: 'v2.0.1',
@@ -67,7 +67,7 @@ const apiData = [
   },
   {
     id: 3,
-    name: 'Order Management API',
+    name: '/order',
     description: 'Handles order processing and tracking',
     status: 'Healthy',
     version: 'v3.1.0',
@@ -97,7 +97,7 @@ const apiData = [
   },
   {
     id: 4,
-    name: 'Inventory Service API',
+    name: '/inventory',
     description: 'Manages product inventory and stock levels',
     status: 'Degraded',
     version: 'v1.0.0',
@@ -127,7 +127,7 @@ const apiData = [
   },
   {
     id: 5,
-    name: 'Notification Service API',
+    name: '/notification',
     description: 'Handles user notifications and alerts',
     status: 'Healthy',
     version: 'v2.3.4',
@@ -155,48 +155,34 @@ const apiData = [
       },
     },
   },
-  {
-    id: 6,
-    name: 'Demonstration',
-    description: 'Manages all payment-related operations',
-    status: 'Warning',
-    version: 'v2.0.1',
-    uptime: '98.5%',
-    responseTime: '300ms',
-    errorRate: '1.5%',
-    lastChecked: '2024-08-18T12:34:56Z',
-    security: {
-      authMechanism: 'API Key',
-      encryption: 'TLS 1.2',
-      vulnerability: 'Minor issue detected',
-      firewallProtection: 'Enabled',
-      DDOSProtection: 'Enabled',
-      penetrationTesting: 'Pending',
-    },
-    performance: {
-      requestCount: 800,
-      avgResponseTime: '320ms',
-      successRate: '95.0%',
-      throughput: '1000 req/s',
-      maxConcurrentUsers: 800,
-      latencyPercentiles: {
-        p95: '350ms',
-        p99: '400ms',
-      },
-    },
-  },
+  
   // Add more APIs here as needed
 ]
 
 const Colors = () => {
   const [selectedApiId, setSelectedApiId] = useState(null)
+  const [apiList, setApiList] = useState([])
+
+  useEffect(() => {
+    fetch('https://api-security-shield-backend.onrender.com/api/apis') // Use the backend URL
+      .then((response) => response.json())
+      .then((data) => {
+        setApiList(data);
+        if (data.length > 0) {
+          setSelectedApiId(data[0].key); // Select the first API by default
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching API list:', error);
+      });
+  }, []);
 
   const handleApiChange = (event) => {
-    const apiId = parseInt(event.target.value, 10)
-    setSelectedApiId(apiId)
-  }
+    const apiKey = event.target.value;
+    setSelectedApiId(apiKey); // Update state with the selected API key
+  };
 
-  const selectedApi = apiData.find((api) => api.id === selectedApiId)
+  const selectedApi = apiData.find((api) => api.name === selectedApiId)
 
   // Enhanced data for latency chart with more variation
   const latencyData = {
@@ -239,8 +225,8 @@ const Colors = () => {
               <option value="" disabled>
                 Select an API
               </option>
-              {apiData.map((api) => (
-                <option key={api.id} value={api.id}>
+              {apiList.map((api) => (
+                <option key={api.key} value={api.key}>
                   {api.name}
                 </option>
               ))}
@@ -413,7 +399,7 @@ const Colors = () => {
         <CCol xs={12}>
           <CCard>
             <CCardBody>
-              <p>Please select an API to view its details.</p>
+              <p>No Information available about this API.</p>
             </CCardBody>
           </CCard>
         </CCol>

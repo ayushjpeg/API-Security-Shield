@@ -1,46 +1,55 @@
-import React, { useState } from 'react'
-import { CCard, CCardHeader, CCardBody, CButton, CFormSelect, CRow, CCol } from '@coreui/react'
-import { DocsLink } from 'src/components'
-import './Typography.css' // Import custom CSS for additional styling
-
-const apiList = [
-  { id: 1, name: 'User Service API', url: 'user-service' },
-  { id: 2, name: 'Payment Service API', url: 'payment' },
-  { id: 3, name: 'Order Management API', url: 'order' },
-  { id: 4, name: 'Inventory Service API', url: 'inventory' },
-  { id: 5, name: 'Notification Service API', url: 'notification' },
-  { id: 6, name: 'Demonstration', url: 'api/demo' },
-]
-
-const owaspTop10 = [
-  'Broken Object Level Authorization',
-  'Broken Authentication',
-  'Broken Object Property Level Authorization',
-  'Unrestricted Resource Consumption',
-  'Broken Function Level Authorization',
-  'Unrestricted Access to Sensitive Business Flows',
-  'Server-Side Request Forgery (SSRF)',
-  'Security Misconfiguration',
-  'Improper Inventory Management',
-  'Unsafe Consumption of APIs',
-]
+import React, { useState, useEffect } from 'react';
+import { CCard, CCardHeader, CCardBody, CButton, CFormSelect, CRow, CCol } from '@coreui/react';
+import { DocsLink } from 'src/components';
+import './Typography.css'; // Import custom CSS for additional styling
 
 const Typography = () => {
-  const [selectedApi, setSelectedApi] = useState(apiList[0])
-  const [results, setResults] = useState(Array(owaspTop10.length).fill(null))
-  const [testing, setTesting] = useState(false)
+  const owaspTop10 = [
+    'Broken Object Level Authorization',
+    'Broken Authentication',
+    'Broken Object Property Level Authorization',
+    'Unrestricted Resource Consumption',
+    'Broken Function Level Authorization',
+    'Unrestricted Access to Sensitive Business Flows',
+    'Server-Side Request Forgery (SSRF)',
+    'Security Misconfiguration',
+    'Improper Inventory Management',
+    'Unsafe Consumption of APIs',
+  ];
+
+  const [apiList, setApiList] = useState([]);
+  const [selectedApi, setSelectedApi] = useState(null);
+  const [results, setResults] = useState(Array(owaspTop10.length).fill(null));
+  const [testing, setTesting] = useState(false);
+
+  useEffect(() => {
+    // Fetch API list on component mount
+    fetch('https://api-security-shield-backend.onrender.com/api/apis') // Use the backend URL
+      .then((response) => response.json())
+      .then((data) => {
+        setApiList(data);
+        if (data.length > 0) {
+          setSelectedApi(data[0]); // Select the first API by default
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching API list:', error);
+      });
+  }, []);
 
   const handleApiChange = (e) => {
-    const selectedApiId = parseInt(e.target.value)
-    const selectedApiData = apiList.find((api) => api.id === selectedApiId)
-    setSelectedApi(selectedApiData)
-  }
+    const selectedApiKey = e.target.value;
+    const selectedApiData = apiList.find((api) => api.key === selectedApiKey);
+    setSelectedApi(selectedApiData);
+  };
 
   const startTest = () => {
-    setTesting(true)
+    if (!selectedApi) return;
+
+    setTesting(true);
 
     // Clear previous results
-    setResults(Array(owaspTop10.length).fill(null))
+    setResults(Array(owaspTop10.length).fill(null));
 
     // Perform actual API request
     fetch('https://api-security-shield-backend.onrender.com/test_api', {
@@ -49,19 +58,19 @@ const Typography = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        api_url: `https://fake-organization.onrender.com/${selectedApi.url}`, // Use selectedApi.url
+        api_url: `https://fake-organization.onrender.com${selectedApi.url}`, // Use selectedApi.url
       }),
     })
       .then((response) => response.json())
       .then((data) => {
-        setResults(owaspTop10.map((risk) => data[risk] || 'Not Tested'))
-        setTesting(false)
+        setResults(owaspTop10.map((risk) => data[risk] || 'Not Tested'));
+        setTesting(false);
       })
       .catch((error) => {
-        console.error('Error during API testing:', error)
-        setTesting(false)
-      })
-  }
+        console.error('Error during API testing:', error);
+        setTesting(false);
+      });
+  };
 
   return (
     <CCard>
@@ -71,15 +80,15 @@ const Typography = () => {
       </CCardHeader>
       <CCardBody>
         <div className="mb-4">
-          <CFormSelect value={selectedApi.id} onChange={handleApiChange}>
+          <CFormSelect value={selectedApi ? selectedApi.key : ''} onChange={handleApiChange} disabled={apiList.length === 0}>
             {apiList.map((api) => (
-              <option key={api.id} value={api.id}>
+              <option key={api.key} value={api.key}>
                 {api.name}
               </option>
             ))}
           </CFormSelect>
         </div>
-        <CButton color="primary" onClick={startTest} disabled={testing} className="mb-4">
+        <CButton color="primary" onClick={startTest} disabled={testing || !selectedApi} className="mb-4">
           {testing ? 'Testing in Progress...' : 'Start Test'}
         </CButton>
         <CRow>
@@ -100,7 +109,7 @@ const Typography = () => {
         </CRow>
       </CCardBody>
     </CCard>
-  )
-}
+  );
+};
 
-export default Typography
+export default Typography;
