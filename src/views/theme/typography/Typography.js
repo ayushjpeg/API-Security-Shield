@@ -4,11 +4,11 @@ import { DocsLink } from 'src/components'
 import './Typography.css' // Import custom CSS for additional styling
 
 const apiList = [
-  { id: 1, name: 'User Service API', url: 'api/user-service' },
-  { id: 2, name: 'Payment Service API', url: 'api/payment' },
-  { id: 3, name: 'Order Management API', url: 'api/order' },
-  { id: 4, name: 'Inventory Service API', url: 'api/inventory' },
-  { id: 5, name: 'Notification Service API', url: 'api/notification' },
+  { id: 1, name: 'User Service API', url: 'user-service' },
+  { id: 2, name: 'Payment Service API', url: 'payment' },
+  { id: 3, name: 'Order Management API', url: 'order' },
+  { id: 4, name: 'Inventory Service API', url: 'inventory' },
+  { id: 5, name: 'Notification Service API', url: 'notification' },
   { id: 6, name: 'Demonstration', url: 'api/demo' },
 ]
 
@@ -43,13 +43,13 @@ const Typography = () => {
     setResults(Array(owaspTop10.length).fill(null))
 
     // Perform actual API request
-    fetch('https://api-security-shield-backend.onrender.com/api/test_api', {
+    fetch('https://api-security-shield-backend.onrender.com/test_api', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        api_url: `https://api-security-shield-backend.onrender.com/${selectedApi.url}`, // Use selectedApi.url
+        api_url: `https://fake-organization.onrender.com/${selectedApi.url}`, // Use selectedApi.url
       }),
     })
       .then((response) => response.json())
