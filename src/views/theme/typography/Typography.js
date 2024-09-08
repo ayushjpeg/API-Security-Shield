@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { CCard, CCardHeader, CCardBody, CButton, CFormSelect, CRow, CCol } from '@coreui/react';
-import { DocsLink } from 'src/components';
-import './Typography.css'; // Import custom CSS for additional styling
+import React, { useState, useEffect } from 'react'
+import { CCard, CCardHeader, CCardBody, CButton, CFormSelect, CRow, CCol } from '@coreui/react'
+import { DocsLink } from 'src/components'
+import './Typography.css' // Import custom CSS for additional styling
 
 const Typography = () => {
   const owaspTop10 = [
@@ -15,41 +15,41 @@ const Typography = () => {
     'Security Misconfiguration',
     'Improper Inventory Management',
     'Unsafe Consumption of APIs',
-  ];
+  ]
 
-  const [apiList, setApiList] = useState([]);
-  const [selectedApi, setSelectedApi] = useState(null);
-  const [results, setResults] = useState(Array(owaspTop10.length).fill(null));
-  const [testing, setTesting] = useState(false);
+  const [apiList, setApiList] = useState([])
+  const [selectedApi, setSelectedApi] = useState(null)
+  const [results, setResults] = useState(Array(owaspTop10.length).fill(null))
+  const [testing, setTesting] = useState(false)
 
   useEffect(() => {
     // Fetch API list on component mount
     fetch('https://api-security-shield-backend.onrender.com/api/apis') // Use the backend URL
       .then((response) => response.json())
       .then((data) => {
-        setApiList(data);
+        setApiList(data)
         if (data.length > 0) {
-          setSelectedApi(data[0]); // Select the first API by default
+          setSelectedApi(data[0]) // Select the first API by default
         }
       })
       .catch((error) => {
-        console.error('Error fetching API list:', error);
-      });
-  }, []);
+        console.error('Error fetching API list:', error)
+      })
+  }, [])
 
   const handleApiChange = (e) => {
-    const selectedApiKey = e.target.value;
-    const selectedApiData = apiList.find((api) => api.key === selectedApiKey);
-    setSelectedApi(selectedApiData);
-  };
+    const selectedApiKey = e.target.value
+    const selectedApiData = apiList.find((api) => api.key === selectedApiKey)
+    setSelectedApi(selectedApiData)
+  }
 
   const startTest = () => {
-    if (!selectedApi) return;
+    if (!selectedApi) return
 
-    setTesting(true);
+    setTesting(true)
 
     // Clear previous results
-    setResults(Array(owaspTop10.length).fill(null));
+    setResults(Array(owaspTop10.length).fill(null))
 
     // Perform actual API request
     fetch('https://api-security-shield-backend.onrender.com/test_api', {
@@ -63,14 +63,14 @@ const Typography = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        setResults(owaspTop10.map((risk) => data[risk] || 'Not Tested'));
-        setTesting(false);
+        setResults(owaspTop10.map((risk) => data[risk] || 'Not Tested'))
+        setTesting(false)
       })
       .catch((error) => {
-        console.error('Error during API testing:', error);
-        setTesting(false);
-      });
-  };
+        console.error('Error during API testing:', error)
+        setTesting(false)
+      })
+  }
 
   return (
     <CCard>
@@ -80,7 +80,11 @@ const Typography = () => {
       </CCardHeader>
       <CCardBody>
         <div className="mb-4">
-          <CFormSelect value={selectedApi ? selectedApi.key : ''} onChange={handleApiChange} disabled={apiList.length === 0}>
+          <CFormSelect
+            value={selectedApi ? selectedApi.key : ''}
+            onChange={handleApiChange}
+            disabled={apiList.length === 0}
+          >
             {apiList.map((api) => (
               <option key={api.key} value={api.key}>
                 {api.name}
@@ -88,7 +92,12 @@ const Typography = () => {
             ))}
           </CFormSelect>
         </div>
-        <CButton color="primary" onClick={startTest} disabled={testing || !selectedApi} className="mb-4">
+        <CButton
+          color="primary"
+          onClick={startTest}
+          disabled={testing || !selectedApi}
+          className="mb-4"
+        >
           {testing ? 'Testing in Progress...' : 'Start Test'}
         </CButton>
         <CRow>
@@ -109,7 +118,7 @@ const Typography = () => {
         </CRow>
       </CCardBody>
     </CCard>
-  );
-};
+  )
+}
 
-export default Typography;
+export default Typography
