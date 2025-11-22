@@ -1,0 +1,30 @@
+name: Build and Deploy API Security Shield
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: [self-hosted, linux]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: |
+          docker build -t api-security-shield:latest .
+
+      - name: Stop existing container (if any)
+        run: |
+          docker rm -f api-security-shield || true
+
+      - name: Run new container
+        run: |
+          docker run -d --restart unless-stopped \
+            --name api-security-shield \
+            -p 8002:8002 \
+            api-security-shield:latest
