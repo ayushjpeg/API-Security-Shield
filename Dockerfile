@@ -24,7 +24,7 @@ WORKDIR /app
 RUN npm install -g serve
 
 # Copy built assets from build stage
-COPY --from=build /app/dist ./dist
+COPY --from=build /app/build ./build
 
 # Expose port 8002
 EXPOSE 8002
@@ -34,4 +34,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD wget --no-verbose --tries=1 --spider http://localhost:8002/ || exit 1
 
 # Start serve on port 8002
-CMD ["serve", "-s", "dist", "-l", "8002"]
+CMD ["serve", "-s", "build", "-l", "8002"]
