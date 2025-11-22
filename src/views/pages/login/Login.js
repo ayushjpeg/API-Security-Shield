@@ -25,7 +25,7 @@ const Login = () => {
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('https://api-security-shield-backend.onrender.com/token', {
+      const response = await axios.post('https://api-security-shield-backend.ayux.in/token', {
         username,
         password
       }, {

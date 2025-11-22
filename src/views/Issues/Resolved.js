@@ -20,7 +20,7 @@ function ResolvedIssues() {
 
   useEffect(() => {
     axios
-      .get('https://api-security-shield-backend.onrender.com/issues/resolved')
+      .get('https://api-security-shield-backend.ayux.in/issues/resolved')
       .then((response) => setIssues(response.data))
       .catch((error) => console.error('Error fetching resolved issues:', error))
   }, [])

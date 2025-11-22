@@ -164,7 +164,7 @@ const Colors = () => {
   const [apiList, setApiList] = useState([])
 
   useEffect(() => {
-    fetch('https://api-security-shield-backend.onrender.com/api/apis') // Use the backend URL
+    fetch('https://api-security-shield-backend.ayux.in/api/apis') // Use the backend URL
       .then((response) => response.json())
       .then((data) => {
         setApiList(data);

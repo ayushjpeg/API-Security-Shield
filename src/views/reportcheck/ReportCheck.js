@@ -21,7 +21,7 @@ const ReportCheck = () => {
 
   // Fetch the list of APIs from the backend
   useEffect(() => {
-    fetch('https://api-security-shield-backend.onrender.com/api/apis')
+    fetch('https://api-security-shield-backend.ayux.in/api/apis')
       .then((response) => response.json())
       .then((data) => {
         setApiList(data); // Set the fetched data to apiList
@@ -47,7 +47,7 @@ const ReportCheck = () => {
   // Handle form submission
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('https://api-security-shield-backend.onrender.com/issues', {
+      const response = await axios.post('https://api-security-shield-backend.ayux.in/issues', {
         api: api, // Use the selected API key
         description: description,
       });

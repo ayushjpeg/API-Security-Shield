@@ -24,7 +24,7 @@ const Typography = () => {
 
   useEffect(() => {
     // Fetch API list on component mount
-    fetch('https://api-security-shield-backend.onrender.com/api/apis') // Use the backend URL
+    fetch('https://api-security-shield-backend.ayux.in/api/apis') // Use the backend URL
       .then((response) => response.json())
       .then((data) => {
         setApiList(data)
@@ -52,7 +52,7 @@ const Typography = () => {
     setResults(Array(owaspTop10.length).fill(null))
 
     // Perform actual API request
-    fetch('https://api-security-shield-backend.onrender.com/test_api', {
+    fetch('https://api-security-shield-backend.ayux.in/test_api', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
